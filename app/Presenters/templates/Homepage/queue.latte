@@ -1,0 +1,73 @@
+{block content}
+  <h2 class="mb-4">Fronta přání</h2>
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card shadow">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Tracky ve frontě</h6>
+        </div>
+        <div class="card-body" n:snippet="queue">
+          <p n:if="!$items->count()"><em>Ve frontě zatím nic není.</em></p>
+          <div class="card mb-3 shadow queue-item" n:foreach="$items as $item">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-3">
+                  <img src="{$item->album_image_url}" alt="Album image" class="img img-fluid rounded">
+                </div>
+                <div class="col-7">
+                  <p>
+                  <strong>{$item->name}</strong><br>
+                  {$item->artist_name}<br>{$item->album_name}
+                  <div>
+                    <a n:href="addToQueue! itemId=>$item->id" class="btn btn-success btn-sm ajax">Přidat do spotify</a>
+                    <a n:href="deleteItem! itemId=>$item->id" class="btn btn-danger btn-sm ajax">Smazat přání</a>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <img src="{$basePath}/images/Spotify_Logo_RGB_Green.png" alt="Spotify logo" class="img img-fluid rounded">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card mb-3 shadow">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Veřejný odkaz</h6>
+        </div>
+        <div class="card-body">
+          
+          {var $url =  $presenter->link("//Audience:default", $eventId)}
+          <p>
+            <strong>Veřejná url:</strong>
+            <a href="{$url}" target="_blank">{$url}</a>
+           </p>
+          <p style="text-align: center">
+            <a href="https://qrcode.tec-it.com/API/QRCode?data={$url}&backcolor=%23ffffff" target="_blank">
+              <img class="img-fluid" style="max-width: 180px" src="https://qrcode.tec-it.com/API/QRCode?data={$url}&backcolor=%23ffffff" />
+            </a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+{/block}
+
+{block scripts}
+  {include parent}
+  <script>
+    function update() {
+      $.nette.ajax({link refresh!}, {
+        success: function() {
+          setInterval(update, 5000);
+        }
+      })
+    }
+    setInterval(update, 10000);
+
+    
+  </script>
+{/block}

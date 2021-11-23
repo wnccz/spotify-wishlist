@@ -1,0 +1,67 @@
+{block content}
+	<h2 class="mb-4">Písničky na přání - {$event->name}</h2>
+	<div class="row" n:snippet="wishlist">
+		<div class="col-lg-7">
+			<div class="card shadow mb-3">
+				<div class="card-body">
+					<label for="exampleDataList" class="form-label">Vyber si song podle tvého gusta</label>
+					<input type="text" class="form-control typeahead" id="queryInput" data-provide="typeahead" autocomplete="off">
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-lg-5">
+			<div class="song card shadow">
+				<div class="card-body">
+					<div class="row">
+						<div class="col-12" style="text-align: right">
+							<img src="{$basePath}/images/Spotify_Logo_RGB_Green.png" alt="Spotify logo" class="img rounded" style="width: 120px; margin-bottom: 15px">
+						</div>
+						<div class="col-3">
+							<img src="" class="img-fluid rounded artwork" alt="Song Thumbnail">
+						</div>
+						<div class="col-9">
+							<h3></h3>
+							<p class="mb-0"><span class="artist"></span>
+							<p class="mb-3"><span class="album"></span>
+							<p class="link"><a n:href="AddToList! eventId=>$eventId, trackId=>0" class="ajax btn btn-success">Přidat na playlist</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/block}
+
+{block scripts}
+{include parent}
+	<script>
+		$('.typeahead').typeahead({
+			source: function(query, process) {
+				var uri = {$presenter->link("getSongs!")} + "&q=" + query;
+				return $.ajax( uri , {
+					success: function (result) { return process(result);	}
+				});
+			},
+			items: 12,
+			minLength: 3,
+			afterSelect: function(data) {
+				$(".song img.artwork").attr("src", data.image);
+				$(".song h3").html(data.song_name);
+				$(".song .artist").html(data.artist_name);
+				$(".song .album").html(data.album_name);
+				$(".song").css("display", "block");
+				$(".song .link a").attr("href", {$presenter->link("AddToList!")} + "&eventId=" + {$eventId}  + "&trackId=" + data.id);
+			},
+			matcher: function(query, str) {
+				return true;
+			}
+		});
+		$.nette.ext("wishlist", { success: function(payload) {
+			if (payload.clearForm) {
+				$(".song").css("display", "none");
+				$("#queryInput").val("");
+			}
+		}});
+	</script>
+{/block}

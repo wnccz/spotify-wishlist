@@ -1,0 +1,56 @@
+{block content}
+  <h2 class="mb-4">Výběr událostí</h2>
+  <div class="row" n:snippet="list">
+    <div class="col-lg-8">
+      <div class="card shadow mb-3">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Nadcházející události</h6>
+        </div>
+        <div class="card-body">
+          <p n:if="!$upcomingEvents->count()">Nenašel jsem žádnou akci. Založ si novou přes formulář níže.</p>
+          <div class="event" n:foreach="$upcomingEvents as $event">
+            <div class="row">
+              <div class="col-8">
+                <div class="name">{$event->name}</div>
+                <p>{$event->date|date}, {$event->location}</p>
+              </div>
+              <div class="col-4 text-right">
+                <p style="text-align: right"><a n:href="queue $event->id" class="btn btn-primary btn-sm">Otevřít frontu</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow mb-3" n:if="$pastEvents->count()">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Proběhlé události</h6>
+        </div>
+        <div class="card-body">
+          <div class="event" n:foreach="$pastEvents as $event">
+          <div class="row">
+            <div class="col-8">
+              <div class="name">{$event->name}</div>
+              <p>{$event->date|date}, {$event->location}</p>
+            </div>
+            <div class="col-4 text-right">
+              <p style="text-align: right"><a n:href="queue $event->id" class="btn btn-primary btn-sm">Otevřít frontu</a></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+    <div class="col-lg-4">
+      <div class="card shadow" n:snippet="form">
+        <div class="card-header py-3">
+          <h6 class="m-0 font-weight-bold text-primary">Založení nové události</h6>
+        </div>
+        <div class="card-body">
+          {control addEventForm}
+        </div>
+      </div>
+    </div>
+  </div>
+{/block}

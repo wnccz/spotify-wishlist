@@ -1,0 +1,8 @@
+services:
+	- App\Router\RouterFactory::createRouter
+	cache.storage: Nette\Caching\Storages\FileStorage(%tempDir%/cache/)
+	- Wnc\Wishlist\SpotifyAuthenticator
+	- Wnc\Wishlist\spotifyService( Nette\Caching\Cache(namespace: 'spotify'), %spotify.clientId%, %spotify.clientSecret%)
+	- Wnc\Wishlist\Model\EventModel
+	- Wnc\Wishlist\Model\ItemModel
+	

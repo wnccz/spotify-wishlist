@@ -1,0 +1,31 @@
+
+body { 
+	background: #e6e6e6; 
+	font-family: Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+.queue-item p strong {
+	font-size: 1.6em;
+	color: #8b0909;
+}
+
+.song { 
+	display: none 
+}
+
+.event {
+	background-color: #eee;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	padding: 10px;
+}
+
+.event .name {
+	font-weight: bold;
+	font-size: 1.6em;
+	color: #8b0909;
+}
+
+.form-group {
+	margin-bottom: 1em;
+}
